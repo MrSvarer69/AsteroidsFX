@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse.playersystem;
+package dk.sdu.mmmi.cbse.split;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -23,7 +23,7 @@ public class PlayerPlugin implements IGamePluginService {
         float y = gameData.getDisplayHeight() / 2f;
         float radians = (float) Math.PI / 2;
 
-        Entity playerEntity = new Player(); // Player extends Entity
+        Entity playerEntity = new SplitClass(); // SplitClass extends Entity
         playerEntity.setRadius(8);
 
         playerEntity.add(new PositionComponent(x, y, radians));

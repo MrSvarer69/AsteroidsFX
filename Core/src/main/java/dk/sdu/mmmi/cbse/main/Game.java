@@ -137,7 +137,7 @@ public class Game {
         // Handle shooting bullets
         if (gameData.getKeys().isPressed(GameKeys.SPACE) && bulletService != null) {
             Entity player = world.getEntities().stream()
-                    .filter(e -> e.getClass().getSimpleName().equals("Player"))
+                    .filter(e -> e.getClass().getSimpleName().equals("SplitClass"))
                     .findFirst()
                     .orElse(null);
 
