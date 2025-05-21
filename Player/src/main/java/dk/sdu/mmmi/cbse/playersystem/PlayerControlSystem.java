@@ -1,64 +1,108 @@
 package dk.sdu.mmmi.cbse.playersystem;
 
-import dk.sdu.mmmi.cbse.common.bullet.Bullet;
-import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.components.MovementComponent;
+import dk.sdu.mmmi.cbse.common.data.components.HealthComponent;
+import dk.sdu.mmmi.cbse.common.data.components.PositionComponent;
+import dk.sdu.mmmi.cbse.common.data.components.TimeComponent;
+import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
-
-import java.util.Collection;
-import java.util.ServiceLoader;
-
-import static java.util.stream.Collectors.toList;
-
+import dk.sdu.mmmi.cbse.common.util.BoundaryHandler;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 
+    private BulletSPI bulletService;
+
+    public void setBulletService(BulletSPI bulletService) {
+        this.bulletService = bulletService;
+    }
+
     @Override
     public void process(GameData gameData, World world) {
-            
         for (Entity player : world.getEntities(Player.class)) {
-            if (gameData.getKeys().isDown(GameKeys.LEFT)) {
-                player.setRotation(player.getRotation() - 5);                
-            }
-            if (gameData.getKeys().isDown(GameKeys.RIGHT)) {
-                player.setRotation(player.getRotation() + 5);                
-            }
-            if (gameData.getKeys().isDown(GameKeys.UP)) {
-                double changeX = Math.cos(Math.toRadians(player.getRotation()));
-                double changeY = Math.sin(Math.toRadians(player.getRotation()));
-                player.setX(player.getX() + changeX);
-                player.setY(player.getY() + changeY);
-            }
-            if(gameData.getKeys().isDown(GameKeys.SPACE)) {                
-                getBulletSPIs().stream().findFirst().ifPresent(
-                        spi -> {world.addEntity(spi.createBullet(player, gameData));}
-                );
-            }
-            
-        if (player.getX() < 0) {
-            player.setX(1);
-        }
+            PositionComponent position = player.getComponent(PositionComponent.class);
+            MovementComponent movement = player.getComponent(MovementComponent.class);
+            HealthComponent health = player.getComponent(HealthComponent.class);
+            TimeComponent cooldown = player.getComponent(TimeComponent.class);
 
-        if (player.getX() > gameData.getDisplayWidth()) {
-            player.setX(gameData.getDisplayWidth()-1);
-        }
+            if (position == null || movement == null || health == null) {
+                continue;
+            }
 
-        if (player.getY() < 0) {
-            player.setY(1);
-        }
+            BoundaryHandler.wrapAround(position, gameData);
 
-        if (player.getY() > gameData.getDisplayHeight()) {
-            player.setY(gameData.getDisplayHeight()-1);
-        }
+            movement.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
+            movement.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
+            movement.setUp(gameData.getKeys().isDown(GameKeys.UP));
 
-                                        
+            movement.process(gameData, player);
+
+            // Screen wrapping logic
+            wrapAround(position, gameData);
+
+            updateShape(player, position);
+
+            // Ensure the player has a cooldown component
+            if (cooldown == null) {
+                cooldown = new TimeComponent(0.5f); // 0.5-second cooldown
+                player.add(cooldown);
+            }
+
+            cooldown.process(gameData, player);
+
+            // Shooting logic
+            if (bulletService != null && cooldown.isCooldownReady() && gameData.getKeys().isPressed(GameKeys.SPACE)) {
+                Entity bullet = bulletService.createBullet(player, gameData);
+                if (bullet != null) {
+                    world.addEntity(bullet);
+                }
+            }
         }
     }
 
-    private Collection<? extends BulletSPI> getBulletSPIs() {
-        return ServiceLoader.load(BulletSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    private void wrapAround(PositionComponent position, GameData gameData) {
+        float x = position.getX();
+        float y = position.getY();
+        float screenWidth = gameData.getDisplayWidth();
+        float screenHeight = gameData.getDisplayHeight();
+
+        if (x < 0) {
+            position.setX(screenWidth);
+        } else if (x > screenWidth) {
+            position.setX(0);
+        }
+
+        if (y < 0) {
+            position.setY(screenHeight);
+        } else if (y > screenHeight) {
+            position.setY(0);
+        }
+    }
+
+    private void updateShape(Entity entity, PositionComponent position) {
+        float[] shapex = new float[4];
+        float[] shapey = new float[4];
+        float x = position.getX();
+        float y = position.getY();
+        float radians = position.getAngle();
+        float radius = entity.getRadius();
+
+        shapex[0] = (float) (x + Math.cos(radians) * radius);
+        shapey[0] = (float) (y + Math.sin(radians) * radius);
+
+        shapex[1] = (float) (x + Math.cos(radians - 4 * Math.PI / 5) * radius);
+        shapey[1] = (float) (y + Math.sin(radians - 4 * Math.PI / 5) * radius);
+
+        shapex[2] = (float) (x + Math.cos(radians + Math.PI) * radius * 0.5);
+        shapey[2] = (float) (y + Math.sin(radians + Math.PI) * radius * 0.5);
+
+        shapex[3] = (float) (x + Math.cos(radians + 4 * Math.PI / 5) * radius);
+        shapey[3] = (float) (y + Math.sin(radians + 4 * Math.PI / 5) * radius);
+
+        entity.setShapeX(shapex);
+        entity.setShapeY(shapey);
     }
 }
