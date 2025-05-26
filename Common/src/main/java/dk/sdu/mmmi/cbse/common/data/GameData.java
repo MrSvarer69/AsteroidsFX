@@ -19,16 +19,8 @@ public class GameData {
         return delta;
     }
 
-    public void setDisplayWidth(int width) {
-        this.displayWidth = width;
-    }
-
     public int getDisplayWidth() {
         return displayWidth;
-    }
-
-    public void setDisplayHeight(int height) {
-        this.displayHeight = height;
     }
 
     public int getDisplayHeight() {

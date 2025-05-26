@@ -23,31 +23,22 @@ public class Entity implements Serializable {
     // Custom properties (for any ad-hoc metadata)
     private final Map<String, Object> properties = new ConcurrentHashMap<>();
 
-    // --- ID ---
+    // ID
     public String getID() {
         return ID.toString();
     }
 
-    // --- Component Management ---
+    // Component Management
 
     public <T extends EntityComponent> void add(T component) {
         components.put(component.getClass(), component);
     }
 
-    @SuppressWarnings("unchecked")
     public <T extends EntityComponent> T getComponent(Class<T> componentClass) {
         return (T) components.get(componentClass);
     }
 
-    public void removeComponent(Class<? extends EntityComponent> componentClass) {
-        components.remove(componentClass);
-    }
-
-    public Collection<EntityComponent> getAllComponents() {
-        return components.values();
-    }
-
-    // --- Shape ---
+    // Shape
 
     public float[] getShapeX() {
         return shapeX;
@@ -65,7 +56,7 @@ public class Entity implements Serializable {
         this.shapeY = shapeY;
     }
 
-    // --- Radius ---
+    // Radius
 
     public void setRadius(float radius) {
         this.radius = radius;
@@ -75,17 +66,4 @@ public class Entity implements Serializable {
         return this.radius;
     }
 
-    // --- Properties ---
-
-    public Map<String, Object> getProperties() {
-        return properties;
-    }
-
-    public void setProperty(String key, Object value) {
-        properties.put(key, value);
-    }
-
-    public Object getProperty(String key) {
-        return properties.get(key);
-    }
 }

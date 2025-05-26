@@ -10,7 +10,7 @@ public class PositionComponent implements EntityComponent {
 
     private float x;
     private float y;
-    private float angle; // replaces "radians" for clearer naming
+    private float angle;
 
     public PositionComponent(float x, float y, float angle) {
         this.x = x;
@@ -49,6 +49,5 @@ public class PositionComponent implements EntityComponent {
 
     @Override
     public void process(GameData gameData, Entity entity) {
-        // No processing needed for static position
     }
 }

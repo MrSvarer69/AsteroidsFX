@@ -33,7 +33,7 @@ public class Game {
     }
 
     public Pane getCanvas() {
-        return new Pane(); // Return a new Pane instance to avoid reuse issues
+        return new Pane();
     }
 
     public void setBulletService(BulletSPI bulletService) {
@@ -48,11 +48,11 @@ public class Game {
         this.postEntityProcessingServices = postEntityProcessingServices;
     }
 
-    public void start(Stage window) throws Exception {
+    public void start(Stage window){
         Pane gameWindow = new Pane();
         Text scoreText = new Text(10, 20, "Points: 0");
-        scoreText.setFill(Color.WHITE); // Set text color to white for visibility
-        scoreText.setStyle("-fx-font-size: 20;"); // Optional: Set font size
+        scoreText.setFill(Color.WHITE);
+        scoreText.setStyle("-fx-font-size: 20;");
         gameWindow.getChildren().add(scoreText);
 
         Scene scene = new Scene(gameWindow);
@@ -101,16 +101,16 @@ public class Game {
         window.setWidth(800);
         window.setHeight(800);
         window.show();
-        gameWindow.setStyle("-fx-background-color: black;"); // Set background color to black
+        gameWindow.setStyle("-fx-background-color: black;");
 
-        // Start the game loop (AnimationTimer)
+        // Start the game loop
         new AnimationTimer() {
             private long lastTime = System.nanoTime();
 
             @Override
             public void handle(long now) {
                 // Calculate delta time
-                float delta = (now - lastTime) / 1_000_000_000.0f; // Convert nanoseconds to seconds
+                float delta = (now - lastTime) / 1_000_000_000.0f;
                 gameData.setDelta(delta);
                 lastTime = now;
 

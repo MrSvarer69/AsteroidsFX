@@ -28,7 +28,7 @@ public class World {
     }
 
     public void removeEntity(Entity entity) {
-        if (entity != null && entityMap.containsKey(entity.getID())) {
+        if (entity != null) {
             entityMap.remove(entity.getID());
         }
     }
@@ -59,10 +59,6 @@ public class World {
             }
         }
         return result;
-    }
-
-    public Entity getEntity(String ID) {
-        return entityMap.get(ID);
     }
 
     public GameScore getGameScore() {

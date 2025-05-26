@@ -25,26 +25,6 @@ public class MovementComponent implements EntityComponent {
         this.rotationSpeed = rotationSpeed;
     }
 
-    public float getDx() {
-        return dx;
-    }
-
-    public float getDy() {
-        return dy;
-    }
-
-    public void setDeceleration(float deceleration) {
-        this.deceleration = deceleration;
-    }
-
-    public void setAcceleration(float acceleration) {
-        this.acceleration = acceleration;
-    }
-
-    public void setMaxSpeed(float maxSpeed) {
-        this.maxSpeed = maxSpeed;
-    }
-
     public void setSpeed(float speed) {
         this.acceleration = speed;
         this.maxSpeed = speed;
@@ -52,10 +32,6 @@ public class MovementComponent implements EntityComponent {
 
     public float getSpeed() {
         return (float) Math.sqrt(dx * dx + dy * dy);
-    }
-
-    public void setRotationSpeed(float rotationSpeed) {
-        this.rotationSpeed = rotationSpeed;
     }
 
     public void setLeft(boolean left) {

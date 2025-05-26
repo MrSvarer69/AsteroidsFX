@@ -4,7 +4,7 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
 public class TimeComponent implements EntityComponent {
-    private float expiration;
+    private final float expiration;
     private float elapsedTime = 0;
 
     public TimeComponent(float expiration) {
@@ -29,13 +29,5 @@ public class TimeComponent implements EntityComponent {
 
     public void reset() {
         elapsedTime = 0;
-    }
-
-    public float getElapsedTime() {
-        return elapsedTime;
-    }
-
-    public float getExpiration() {
-        return expiration;
     }
 }

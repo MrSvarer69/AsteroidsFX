@@ -5,8 +5,7 @@ public class GameKeys {
     private static boolean[] keys;
     private static boolean[] pkeys;
 
-    // Increase NUM_KEYS to 12 (or however many keys you're actually using)
-    private static final int NUM_KEYS = 20;
+    private static final int NUM_KEYS = 12;
     public static final int UP = 0;
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
@@ -23,12 +22,6 @@ public class GameKeys {
     public GameKeys() {
         keys = new boolean[NUM_KEYS];
         pkeys = new boolean[NUM_KEYS];
-    }
-
-    public void update() {
-        for (int i = 0; i < NUM_KEYS; i++) {
-            pkeys[i] = keys[i];
-        }
     }
 
     public void setKey(int k, boolean b) {

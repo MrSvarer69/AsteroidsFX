@@ -16,10 +16,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
     private BulletSPI bulletService;
 
-    public void setBulletService(BulletSPI bulletService) {
-        this.bulletService = bulletService;
-    }
-
     @Override
     public void process(GameData gameData, World world) {
         for (Entity player : world.getEntities(Player.class)) {
@@ -40,14 +36,12 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             movement.process(gameData, player);
 
-            // Screen wrapping logic
             wrapAround(position, gameData);
 
             updateShape(player, position);
 
-            // Ensure the player has a cooldown component
             if (cooldown == null) {
-                cooldown = new TimeComponent(0.5f); // 0.5-second cooldown
+                cooldown = new TimeComponent(0.5f);
                 player.add(cooldown);
             }
 

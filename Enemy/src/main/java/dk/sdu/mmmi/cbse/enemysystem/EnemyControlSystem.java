@@ -19,10 +19,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
     private BulletSPI bulletService;
     private static final Random random = new Random();
 
-    public void setBulletService(BulletSPI bulletService) {
-        this.bulletService = bulletService;
-    }
-
     @Override
     public void process(GameData gameData, World world) {
         for (Entity enemy : world.getEntities(Enemy.class)) {
@@ -54,7 +50,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             movement.setUp(false);
 
             if (cooldown == null) {
-                cooldown = new TimeComponent(1); // 1-second cooldown
+                cooldown = new TimeComponent(1);
                 enemy.add(cooldown);
             }
 

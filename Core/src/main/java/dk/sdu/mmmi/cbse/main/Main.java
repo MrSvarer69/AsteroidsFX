@@ -20,7 +20,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage window) throws Exception {
+    public void start(Stage window){
         List<IGamePluginService> gamePluginServices = StreamSupport
                 .stream(ServiceLoader.load(IGamePluginService.class).spliterator(), false)
                 .collect(Collectors.toList());
@@ -33,7 +33,6 @@ public class Main extends Application {
                 .stream(ServiceLoader.load(IPostEntityProcessingService.class).spliterator(), false)
                 .collect(Collectors.toList());
 
-        // Load BulletSPI implementation
         BulletSPI bulletSPI = ServiceLoader.load(BulletSPI.class)
                 .findFirst()
                 .orElse(null);
