@@ -42,20 +42,6 @@ public class World {
 
     public void addScore(int points) {
         gameScore.addScore(points);
-
-        // Send the score to the ScoringSystem Spring application
-        try {
-            URL url = new URL("http://localhost:8080/score?point=" + points); // Adjust the URL if needed
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setDoOutput(true);
-
-            int responseCode = connection.getResponseCode();
-
-            connection.disconnect();
-        } catch (Exception e) {
-            System.err.println("Error while sending score to ScoringSystem: " + e.getMessage());
-        }
     }
 
     public Collection<Entity> getEntities() {

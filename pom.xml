@@ -13,18 +13,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>        
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <spring-boot.version>3.1.4</spring-boot.version>
     </properties>
     
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-controls</artifactId>
@@ -43,29 +35,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>6.0.11</version>
-        </dependency>
-    </dependencies>
-
     <modules>
         <module>Core</module>
         <module>Common</module>
@@ -77,7 +46,6 @@
         <module>Collision</module>
         <module>Enemy</module>
         <module>CommonEnemy</module>
-        <module>Scoring</module>
     </modules>
 
     <build>
@@ -109,12 +77,10 @@
                     <workingDirectory>.</workingDirectory>
                     <arguments>
                         <argument>--module-path=mods-mvn</argument>
-                        <argument>--class-path=libs/*:${settings.localRepository}/org/springframework/boot/spring-boot/${spring-boot.version}/*:${settings.localRepository}/org/springframework/spring-web/6.0.11/*</argument>
                         <argument>--module=Core/dk.sdu.mmmi.cbse.main.Main</argument>
                         <argument>--add-modules</argument>
-                        <argument>javafx.graphics,spring.core,spring.beans,spring.context</argument>
+                        <argument>javafx.graphics</argument>
                         <argument>--add-opens</argument>
-                        <argument>java.base/java.lang=spring.core</argument>
                     </arguments>
                 </configuration>
             </plugin>

@@ -50,7 +50,7 @@ public class Game {
 
     public void start(Stage window) throws Exception {
         Pane gameWindow = new Pane();
-        Text scoreText = new Text(10, 20, "Destroyed asteroids: 0");
+        Text scoreText = new Text(10, 20, "Points: 0");
         scoreText.setFill(Color.WHITE); // Set text color to white for visibility
         scoreText.setStyle("-fx-font-size: 20;"); // Optional: Set font size
         gameWindow.getChildren().add(scoreText);
