@@ -99,4 +99,20 @@ public class PlayerControlSystem implements IEntityProcessingService {
         entity.setShapeX(shapex);
         entity.setShapeY(shapey);
     }
+
+    static Entity createPlayer(GameData gameData) {
+        float x = gameData.getDisplayWidth() / 2f;
+        float y = gameData.getDisplayHeight() / 2f;
+        float radians = (float) Math.PI / 2;
+
+        Entity playerEntity = new Player(); // Player extends Entity
+        playerEntity.setRadius(8);
+
+        playerEntity.add(new PositionComponent(x, y, radians));
+        playerEntity.add(new MovementComponent(10, 100, 200, 5));
+        playerEntity.add(new HealthComponent(3)); // 3 lives
+
+        return playerEntity;
+    }
+
 }

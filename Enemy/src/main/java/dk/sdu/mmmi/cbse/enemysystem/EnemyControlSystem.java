@@ -13,11 +13,19 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.util.BoundaryHandler;
 
 import java.util.Random;
+import java.util.ServiceLoader;
 
 public class EnemyControlSystem implements IEntityProcessingService {
 
     private BulletSPI bulletService;
     private static final Random random = new Random();
+
+    public EnemyControlSystem() {
+        ServiceLoader<BulletSPI> loader = ServiceLoader.load(BulletSPI.class);
+        if (loader.findFirst().isPresent()) {
+            bulletService = loader.findFirst().get();
+        }
+    }
 
     @Override
     public void process(GameData gameData, World world) {
@@ -57,7 +65,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             cooldown.process(gameData, enemy);
 
             // Random shooting logic
-            if (bulletService != null && cooldown.isCooldownReady() && random.nextFloat() < 1.00f) {
+            if (bulletService != null && cooldown.isCooldownReady() && random.nextFloat() < 0.50f) {
                 Entity bullet = bulletService.createBullet(enemy, gameData);
                 if (bullet != null) {
                     world.addEntity(bullet);
